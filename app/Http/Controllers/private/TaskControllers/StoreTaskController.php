@@ -4,6 +4,7 @@ namespace App\Http\Controllers\private\TaskControllers;
 
 use App\Events\TaskAssignedEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +17,7 @@ class StoreTaskController extends Controller
     public function __invoke(Request $request, User $user): JsonResponse
     {
 
-        request()->validate([
+        $validatedData = request()->validate([
             'project_id' => 'required|string|exists:App\Models\Project,id',
             'title' => 'required|string|max:255|unique:tasks',
             'description' => 'required|string|min:30',
@@ -28,6 +29,7 @@ class StoreTaskController extends Controller
             "updated_at" => "nullable|date",
         ]);
 
+        $project = Project::findOrFail($validatedData['project_id']);
 
         $datos = [
             'id' => Str::uuid()->toString(),
@@ -46,7 +48,7 @@ class StoreTaskController extends Controller
 
         $task->save();
 
-        event(new TaskAssignedEvent($task));
+        event(new TaskAssignedEvent($task, $project));
 
         return response()->json([
             'id' => $task->id,

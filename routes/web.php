@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\private\AttachmentControllers\DeleteAttachmentController;
 use App\Http\Controllers\private\AttachmentControllers\DownloadAttachmentController;
 use App\Http\Controllers\private\AttachmentControllers\IndexAttachmentController;
@@ -59,7 +60,10 @@ Route::get('/', function () {
 Route::post('/api/register', [RegisterController::class, 'register']);
 Route::post('/api/login', [LoginController::class, 'login']);
 
+
 Route::middleware([JwtMiddleware::class])->group(function () {
+
+    Route::get('/api/check-status', [AuthController::class, 'checkIsAdmin']);
 
     /* Mostrar usuarios */
     Route::get('/api/users', [IndexUserController::class, '__invoke']);
