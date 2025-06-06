@@ -11,15 +11,14 @@ class MarkAllNotificationsAsReadController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {
-        $user = $request->user(); // Obtiene el usuario autenticado
+        $user = $request->user();
 
-        // Si por alguna razón no hay usuario autenticado (aunque el middleware debería prevenirlo)
         if (!$user) {
             return response()->json(['message' => 'No autenticado.'], 401);
         }
 
-        $updatedCount = Notification::where('user_id', $request->route('id'))
-            ->where('read', false) // Solo las no leídas
+        $updatedCount = Notification::where('user_id', $user->id)
+            ->where('read', false)
             ->update(['read' => true]);
 
         if ($updatedCount > 0) {

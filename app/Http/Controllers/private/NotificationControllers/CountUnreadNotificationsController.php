@@ -10,7 +10,7 @@ class CountUnreadNotificationsController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $user = auth()->user(); // Obtiene el usuario autenticado
+        $user = auth()->user();
 
         if (!$user) {
             return response()->json(['message' => 'No autenticado.'], 401);
@@ -18,7 +18,7 @@ class CountUnreadNotificationsController extends Controller
 
         $unreadCount = Notification::query()
             ->where('user_id', $user->id)
-            ->where('read', false) // Solo las no leídas
+            ->where('read', false)
             ->count();
 
         return $unreadCount;

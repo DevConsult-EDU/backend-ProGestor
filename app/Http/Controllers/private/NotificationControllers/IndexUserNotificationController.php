@@ -10,18 +10,18 @@ class IndexUserNotificationController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $notifications = DB::table('notifications');
 
-        if(auth()->user()->rol !== 'admin'){
-            $notifications = $notifications->where('user_id', auth()->user()->id);
-        }
+        $limit = $request->input('limit', 20);
 
-        $notifications = $notifications->latest()->get();
+        $notificationsQuery = DB::table('notifications')
+            ->where('user_id', auth()->user()->id)
+            ->latest();
 
-        $Notificaciones = [];
-        foreach ($notifications as $notification) {
-            $Notificaciones[] = [
+        $paginatedNotifications = $notificationsQuery->paginate($limit);
 
+        $transformedNotifications = [];
+        foreach ($paginatedNotifications as $notification) {
+            $transformedNotifications[] = [
                 'id' => $notification->id,
                 'user_id' => $notification->user_id,
                 'type' => $notification->type,
@@ -34,6 +34,6 @@ class IndexUserNotificationController extends Controller
             ];
         }
 
-        return response()->json($Notificaciones);
+        return response()->json($transformedNotifications);
     }
 }
