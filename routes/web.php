@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\private\AIChatController\DashboardAISummaryController;
 use App\Http\Controllers\private\AttachmentControllers\DeleteAttachmentController;
 use App\Http\Controllers\private\AttachmentControllers\DownloadAttachmentController;
 use App\Http\Controllers\private\AttachmentControllers\IndexAttachmentController;
@@ -157,13 +158,18 @@ Route::middleware([JwtMiddleware::class])->group(function () {
     /*Borrar archivo*/
     Route::delete('/api/auth/attachments/{id}', [DeleteAttachmentController::class, '__invoke']);
 
+    /*Ai resumen dashboard*/
+    Route::get('/api/dashboard/ai-summary', [DashboardAISummaryController::class, '__invoke'])
+//        ->middleware('cache.response')
+    ;
+
     /*Mostrar tareas en dashboard*/
     Route::get('/api/dashboard/tasks', [UserPendingTasksController::class, '__invoke']);
 
-    /*Proyectos activos*/
+    /*Proyectos activos en dashboard*/
     Route::get('/api/dashboard/projects', [UserActiveProjectsController::class, '__invoke']);
 
-    /*Actividades recientes*/
+    /*Actividades recientes en dashboard*/
     Route::get('/api/dashboard/comments', [RecentActivitiesController::class, '__invoke']);
 
     /*Listar notificaciones*/

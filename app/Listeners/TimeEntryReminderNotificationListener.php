@@ -27,7 +27,7 @@ class TimeEntryReminderNotificationListener
             'type' => 'Notificación',
             'title' => 'Recordatorio de registro de tiempo',
             'content' => 'No has registrado tiempo de trabajo hoy. Por favor, actualiza tus registros de tiempo.',
-            'link' => '/auth/tasks',
+            'link' => '/tasks',
             'read' => false,
         ]);
     }

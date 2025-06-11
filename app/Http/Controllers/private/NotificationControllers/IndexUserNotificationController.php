@@ -17,6 +17,14 @@ class IndexUserNotificationController extends Controller
             ->where('user_id', auth()->user()->id)
             ->latest();
 
+        if ($request->has('types') && is_array($request->input('types'))) {
+            $filterTypes = $request->input('types');
+
+            if (!empty($filterTypes)) {
+                $notificationsQuery->whereIn('type', $filterTypes);
+            }
+        }
+
         $paginatedNotifications = $notificationsQuery->paginate($limit);
 
         $transformedNotifications = [];

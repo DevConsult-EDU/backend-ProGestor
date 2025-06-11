@@ -29,7 +29,7 @@ class AttachmentUploadedNotificationListener
             'type' => 'Notificación',
             'title' => 'Nuevo archivo adjunto',
             'content' => $user->name . ' ha subido el archivo ' . $attachment->file_name . ' a la tarea ' . $task->title,
-            'link' => '/auth/tasks/' . $task->id,
+            'link' => '/tasks/' . $task->id,
             'read' => false,
         ]);
     }

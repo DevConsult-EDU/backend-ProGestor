@@ -34,7 +34,7 @@ class TaskDueDateNotificationListener
             'type' => 'Fecha límite',
             'title' => 'Tarea próxima a vencer',
             'content' => 'La tarea ' . $task->title . ' vence mañana',
-            'link' => '/auth/tasks/' . $task->id,
+            'link' => '/tasks/' . $task->id,
             'read' => false,
         ]);
 

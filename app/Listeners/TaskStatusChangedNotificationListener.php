@@ -29,7 +29,7 @@ class TaskStatusChangedNotificationListener
             'type' => 'Modificación',
             'title' => 'Cambio de estado en tarea',
             'content' => 'La tarea ' . $task->title . ' ha cambiado a -' . $task->status . '-',
-            'link' => '/auth/tasks',
+            'link' => '/tasks',
             'read' => false,
         ]);
     }

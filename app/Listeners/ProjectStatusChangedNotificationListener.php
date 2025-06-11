@@ -28,7 +28,7 @@ class ProjectStatusChangedNotificationListener
             'type' => 'Modificación',
             'title' => 'Actualización de proyecto',
             'content' => 'El proyecto ' . $project->name . ' ha cambiado a estado -' . $project->status . '-',
-            'link' => '/auth/projects',
+            'link' => '/projects',
             'read' => false,
         ]);
     }

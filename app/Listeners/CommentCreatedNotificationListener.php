@@ -31,7 +31,7 @@ class CommentCreatedNotificationListener
             'type' => 'Comentario',
             'title' => 'Nuevo comentario en tu tarea',
             'content' => $user->name . ' ha comentado en la tarea ' . $task->title . ': ' . $comment->comment,
-            'link' => '/auth/tasks/' . $task->id,
+            'link' => '/tasks/' . $task->id,
             'read' => false,
         ]);
     }

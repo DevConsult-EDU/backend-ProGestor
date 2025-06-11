@@ -31,7 +31,7 @@ class UserMentionedNotificationListener
                 'type' => 'Notificación',
                 'title' => 'Te han mencionado en un comentario',
                 'content' => $comment->user->name . ' te ha mencionado en un comentario: ' . $comment->comment,
-                'link' => '/auth/tasks/' . $comment->task_id,
+                'link' => '/tasks/' . $comment->task_id,
                 'read' => false,
             ]);
         }

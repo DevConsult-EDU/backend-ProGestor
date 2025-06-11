@@ -30,7 +30,7 @@ class TaskAssignedNotificationListener
             'type' => 'Asignación',
             'title' => 'Nueva tarea asignada',
             'content' => 'Se te ha asignado la tarea ' . $task->title .' en el proyecto ' . $project->name,
-            'link' => '/auth/tasks',
+            'link' => '/tasks',
             'read' => false,
         ]);
     }
