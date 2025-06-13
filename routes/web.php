@@ -3,6 +3,9 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\private\AIChatController\DashboardAISummaryController;
+use App\Http\Controllers\private\AIChatController\DescriptionGeneratorAIController;
+use App\Http\Controllers\private\AIChatController\TaskDistributionAnalysisController;
+use App\Http\Controllers\private\AIChatController\TaskPrioritizationAIController;
 use App\Http\Controllers\private\AttachmentControllers\DeleteAttachmentController;
 use App\Http\Controllers\private\AttachmentControllers\DownloadAttachmentController;
 use App\Http\Controllers\private\AttachmentControllers\IndexAttachmentController;
@@ -47,9 +50,9 @@ use App\Http\Controllers\private\UpdateUserController;
 use App\Http\Controllers\public\LoginController;
 use App\Http\Controllers\public\RegisterController;
 use App\Http\JwtMiddleware;
-use App\Livewire\Settings\Appearance;
-use App\Livewire\Settings\Password;
-use App\Livewire\Settings\Profile;
+//use App\Livewire\Settings\Appearance;
+//use App\Livewire\Settings\Password;
+//use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 
 
@@ -93,6 +96,8 @@ Route::middleware([JwtMiddleware::class])->group(function () {
     /* Borrar cliente */
     Route::delete('/api/auth/customers/{id}', [DeleteCustomerController::class, '__invoke']);
 
+    /*Descripción de IA*/
+    Route::get('/api/projects/ai-assistance', [DescriptionGeneratorAIController::class, 'generateDescription']);
 
     /* Mostrar proyectos */
     Route::get('/api/projects', [IndexProjectController::class, '__invoke']);
@@ -106,6 +111,9 @@ Route::middleware([JwtMiddleware::class])->group(function () {
 
     /* Borrar proyecto */
     Route::delete('/api/auth/projects/{id}', [DeleteProjectController::class, '__invoke']);
+
+    /*Sugerencias tareas ai*/
+    Route::get('/api/tasks/ai-suggestions', [TaskPrioritizationAIController::class, '__invoke']);
 
     /* Mostrar tareas */
     Route::get('/api/tasks', [IndexTaskController::class, '__invoke']);
@@ -159,9 +167,10 @@ Route::middleware([JwtMiddleware::class])->group(function () {
     Route::delete('/api/auth/attachments/{id}', [DeleteAttachmentController::class, '__invoke']);
 
     /*Ai resumen dashboard*/
-    Route::get('/api/dashboard/ai-summary', [DashboardAISummaryController::class, '__invoke'])
-//        ->middleware('cache.response')
-    ;
+    Route::get('/api/dashboard/ai-summary', [DashboardAISummaryController::class, '__invoke']);
+
+    /*Ai grafica*/
+    Route::get('/api/dashboard/ai-graphic', [TaskDistributionAnalysisController::class, '__invoke']);
 
     /*Mostrar tareas en dashboard*/
     Route::get('/api/dashboard/tasks', [UserPendingTasksController::class, '__invoke']);
@@ -172,13 +181,16 @@ Route::middleware([JwtMiddleware::class])->group(function () {
     /*Actividades recientes en dashboard*/
     Route::get('/api/dashboard/comments', [RecentActivitiesController::class, '__invoke']);
 
-    /*Listar notificaciones*/
+    /*COntar notificaciones no leídas*/
     Route::get('/api/auth/notifications/count-unread', [CountUnreadNotificationsController::class, '__invoke']);
 
+    /*Listar notificaciones*/
     Route::get('/api/auth/notifications/{id}', [IndexUserNotificationController::class, '__invoke']);
 
+    /*Marcar 1 notificación como leída*/
     Route::put('/api/auth/notifications/{notificationId}/mark-as-readed', [MarkNotificationAsReadController::class, '__invoke']);
 
+    /*Marcar todas como leídas*/
     Route::put('/api/auth/notifications/{id}/mark-all-readed', [MarkAllNotificationsAsReadController::class, '__invoke']);
 
     Route::view('dashboard', 'dashboard')

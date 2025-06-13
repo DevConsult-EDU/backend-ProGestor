@@ -9,13 +9,13 @@ class UserActiveProjectsController extends Controller
 {
     public function __invoke()
     {
-        $projects = DB::table('projects')->get();
+        $projects = DB::table('projects')->whereNotIn('status', ['Completado', 'Pospuesto'])->take(5)->get();
 
         $proyectos = [];
         foreach ($projects as $project) {
 
             $taskCount = DB::table('tasks')->where('project_id', $project->id)->count();
-            $completedTask = DB::table('tasks')->where('project_id', $project->id)->where('status', 'completado')->count();
+            $completedTask = DB::table('tasks')->where('project_id', $project->id)->where('status', 'Hecho')->count();
 
                 $proyectos[] = [
                     'id' => $project->id,

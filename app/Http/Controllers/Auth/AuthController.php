@@ -34,7 +34,7 @@ class AuthController extends Controller
                 }
             }
 
-            if($user->rol != 'admin') {
+            if($user->rol != 'Admin') {
                 return response()->json(['message' => 'User not authenticated or token invalid.'], 401);
             }
 

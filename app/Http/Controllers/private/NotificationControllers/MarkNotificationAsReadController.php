@@ -11,8 +11,7 @@ class MarkNotificationAsReadController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {
-        // Opcional: Verificar que el usuario autenticado es el propietario de la notificación
-        // Esto es una buena práctica de seguridad.
+
         if (!auth()->user()) {
             return response()->json(['message' => 'No autorizado para marcar esta notificación.'], 403);
         }
@@ -23,7 +22,6 @@ class MarkNotificationAsReadController extends Controller
             return response()->json(['message' => 'Notificación no encontrada.'], 404);
         }
 
-        // Si la notificación ya está leída, no hacemos nada y devolvemos éxito.
         if ($notification->read) {
             return response()->json([
                 'message' => 'La notificación ya estaba marcada como leída.',
@@ -31,7 +29,6 @@ class MarkNotificationAsReadController extends Controller
             ]);
         }
 
-        // Marcar como leída y guardar
         $notification->update(['read' => true]);
 
         return response()->json([

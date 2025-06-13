@@ -13,11 +13,11 @@ class UserPendingTasksController extends Controller
 
         $tasks = DB::table('tasks');
 
-        if(auth()->user()->rol !== 'admin'){
+        if(auth()->user()->rol !== 'Admin'){
             $tasks = $tasks->where('user_id', auth()->user()->id);
         }
 
-        $tasks = $tasks->get();
+        $tasks = $tasks->whereNotIn('status', ['Hecho'])->take(5)->get();
 
         $tareas = [];
 

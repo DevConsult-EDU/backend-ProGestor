@@ -15,8 +15,8 @@ class StoreProjectController extends Controller
     {
 
         request()->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|min:30',
+            'name' => 'required|string|max:40',
+            'description' => 'required|string|min:20',
             'customer_id' => 'required|string|exists:App\Models\Customer,id',
             'status' => 'string|max:255',
             "started_at" => "required|date",

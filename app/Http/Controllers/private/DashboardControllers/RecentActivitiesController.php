@@ -11,7 +11,7 @@ class RecentActivitiesController extends Controller
     public function __invoke(Request $request)
     {
 
-        $comments = DB::table('comments')->take(5)->get();
+        $comments = DB::table('comments')->take(8)->get();
 
         $Comentarios = [];
         foreach ($comments as $comment) {

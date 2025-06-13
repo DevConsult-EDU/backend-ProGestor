@@ -49,7 +49,8 @@ class DashboardAISummaryController extends Controller
                 $contenidoExtraido = trim($coincidencias[1]);
             }
 
-            return response()->json(['summary' => $contenidoExtraido]);
+
+            return response()->json(['summary' => $respuestaChat]);
 
         } catch (Exception $e) {
             report($e);
@@ -68,7 +69,7 @@ class DashboardAISummaryController extends Controller
     {
         return <<<PROMPT
         Eres un analista de proyectos experto y tu función es analizar los datos de un dashboard de gestión de proyectos y generar un resumen ejecutivo conciso en español.
-        No des recomendaciones ni opiniones.
+        No des recomendaciones ni opiniones. Los username deben estar en negrita.
 
         A continuación te proporciono los datos del dashboard actual en formato JSON:
 
@@ -77,10 +78,11 @@ class DashboardAISummaryController extends Controller
         ```
 
         Basándote en estos datos, por favor, genera un resumen estético que incluya:
-        1.  **Visión General Rápida:** Una o dos frases que resuman el estado general (ej. "La actividad es alta y los proyectos avanzan bien" o "Hay varias tareas críticas pendientes que requieren atención").
-        2.  **Puntos Clave:** Usa una lista con viñetas para destacar los números más importantes (ej. total de proyectos activos, número de tareas pendientes).
-        3.  **Actividad Reciente:** Menciona brevemente si ha habido comentarios o actividad reciente.
-        4.  **Tono:** El resumen debe ser profesional, claro y directo. Utiliza Markdown para formatear tu respuesta con títulos y listas.
+        1. **Inicio:** Llevará un titulo en negrita que ponga "Resumen de Hoy". Un resumen breve de las actividades recientes en formato de lista.
+        2. **Puntos importantes:** Dirá el número de tareas y proyectos activos.
+        3. **Tareas urgentes:** Mostrará un listado de las 5 tareas más urgentes y una breve explicación de porque lo son.
+        4.  **Tono:** El resumen debe ser profesional, claro y directo.
+        5. **Estilo:** Utiliza Markdown para formatear tu respuesta con títulos y listas.
         PROMPT;
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+
+use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,8 +16,12 @@ class DashboardDataService
      */
     public function getRecentActivities(): Collection
     {
-        // La lógica del RecentActivitiesController
-        return DB::table('comments')->latest()->take(5)->get();
+
+        return DB::table('comments')
+            ->join('users', 'comments.user_id', '=', 'users.id')
+            ->select('comments.*', 'users.name as user_name')
+            ->orderBy('comments.created_at', 'desc')
+            ->take(5)->get();
     }
 
     /**
@@ -22,12 +29,10 @@ class DashboardDataService
      */
     public function getActiveProjects(): Collection
     {
-        // La lógica del UserActiveProjectsController
-        $projects = DB::table('projects')->where('status', 'activo')->get();
+        $projects = DB::table('projects')->whereNotIn('status', ['Completado', 'Pospuesto'])->get();
 
-        // Es más eficiente obtener todos los contadores en menos consultas
         $taskCounts = DB::table('tasks')
-            ->select('project_id', DB::raw('count(*) as total'), DB::raw("sum(case when status = 'completado' then 1 else 0 end) as completed"))
+            ->select('project_id', DB::raw('count(*) as total'), DB::raw("sum(case when status = 'Hecho' then 1 else 0 end) as completed"))
             ->whereIn('project_id', $projects->pluck('id'))
             ->groupBy('project_id')
             ->get()
@@ -46,9 +51,9 @@ class DashboardDataService
     public function getPendingTasks(): Collection
     {
         // La lógica del UserPendingTasksController
-        $query = DB::table('tasks')->where('status', '!=', 'completado');
+        $query = DB::table('tasks')->where('status', '!=', 'Hecho');
 
-        if (Auth::user()->rol !== 'admin') {
+        if (Auth::user()->rol !== 'Admin') {
             $query->where('user_id', Auth::id());
         }
 

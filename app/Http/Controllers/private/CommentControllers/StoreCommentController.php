@@ -48,9 +48,6 @@ class StoreCommentController extends Controller
         $mentionedUsernames = $this->extractUsernamesFromMentions($comment->comment);
 
         if (!empty($mentionedUsernames)) {
-            // Asumimos que tienes una columna 'username' en tu tabla de usuarios
-            // y que las menciones usan ese 'username'.
-            // Si usas 'name' u otra columna, ajústalo aquí.
 
             $mentionedUsers = User::whereIn('name', $mentionedUsernames)->get();
 
@@ -70,15 +67,10 @@ class StoreCommentController extends Controller
 
     private function extractUsernamesFromMentions(string $text): array
     {
-        // Expresión regular para encontrar @username
-        // @ seguido de uno o más caracteres de palabra (letras, números, guion bajo)
-        // o guiones medios o puntos (común en algunos usernames)
         preg_match_all('/@([\w.-]+)/', $text, $matches);
 
-        // $matches[0] contendrá las coincidencias completas (ej: "@usuario1")
-        // $matches[1] contendrá solo los nombres de usuario (ej: "usuario1")
         if (!empty($matches[1])) {
-            return array_unique($matches[1]); // array_unique para evitar duplicados
+            return array_unique($matches[1]);
         }
         return [];
     }
